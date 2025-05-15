@@ -2,7 +2,7 @@
 I am working on this alone, 2 days before deadline, and I'll prolly die but at this point I deserves it :sparkles:
 
 # I. Lean Canvas
-![leancanvas](Image/leancanvas.png)
+![leancanvas](image/leancanvas.png)
 
 # II. Screen list:
 1.	Task Setup:
@@ -19,4 +19,4 @@ I am working on this alone, 2 days before deadline, and I'll prolly die but at t
 -	Uses the things you buy from the in-app shop to take care of your own little Tamagotchi.
 
 # III. Flow Diagram:
-![flowdiagram](Image/flowdiagram.png)
+![flowdiagram](image/flowdiagram.png)
