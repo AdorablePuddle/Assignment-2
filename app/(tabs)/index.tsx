@@ -1,4 +1,5 @@
 import CoinTab from "@/component/CoinTab";
+import TaskTab from "@/component/tasklist/TaskTab";
 import { styles } from "@/component/ui/Styles";
 import { Dimensions } from "react-native";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
@@ -11,7 +12,7 @@ export default function Index() {
 			<SafeAreaView style={styles.container} >
 				<CoinTab />
 				<ScrollView>
-
+					<TaskTab />
 				</ScrollView>
 			</SafeAreaView>
 		</GestureHandlerRootView>
