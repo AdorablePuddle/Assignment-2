@@ -7,16 +7,14 @@ export const Frequency = {
 
 export class ToDo{
     startTime : number;
-    duration : number;
     dueTime : number;
     message : string;
     freq : number;
     priority : number;
     reward : number;
 
-    constructor(startTime : number, duration : number, dueTime : number, message : string, freq : number, priority : number) {
+    constructor(startTime : number, dueTime : number, message : string, freq : number, priority : number) {
         this.startTime = startTime;
-        this.duration = duration; // Please on god the duration is in SECOND
         this.dueTime = dueTime;
         this.message = message;
         this.freq = freq;

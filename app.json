@@ -33,6 +33,11 @@
           "resizeMode": "contain",
           "backgroundColor": "#F5A9B8"
         }
+      ],
+      [
+        "expo-secure-store", {
+          "configureAndroidBackup": true
+        }
       ]
     ],
     "experiments": {
