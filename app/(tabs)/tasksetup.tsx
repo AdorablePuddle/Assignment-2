@@ -2,25 +2,29 @@ import CoinTab from "@/component/CoinTab";
 import { ThemedText } from "@/component/ThemedText";
 import { ThemedView } from "@/component/ThemedView";
 import { styles } from "@/component/ui/Styles";
+import exchange, { ToDo } from "@/data/ToDo";
+import { saveData, UserData } from "@/data/UserData";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import Slider from "@react-native-community/slider";
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import React from "react";
-import { Dimensions, Platform, Pressable, StyleSheet } from "react-native";
+import { Button, Dimensions, Platform, Pressable, StyleSheet } from "react-native";
 import { GestureHandlerRootView, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 var { width, height } = Dimensions.get("window");
 
 export default function TaskSetup() {
     const [message, setMessage] = React.useState("");
-    const [freqType, setfreqType] = React.useState(""); 
-    const [taskType, setTaskType] = React.useState("");
+    const [freqType, setfreqType] = React.useState("once"); 
+    const [taskType, setTaskType] = React.useState("starttime");
+    const [datetime, setDateTime] = React.useState(new Date());
+    const [priority, setPriority] = React.useState(1);
 
     const [stringDate, setStringDate] = React.useState("");
-    const [date, setDate] = React.useState(new Date());
     const [datePickerVisibility, setDatePickerVisibility] = React.useState(false);
 
     const [stringTime, setStringTime] = React.useState("");
-    const [time, setTime] = React.useState(new Date());
     const [timePickerVisibility, setTimePickerVisibility] = React.useState(false);
 
     const toggleDatePicker = () => {
@@ -30,7 +34,7 @@ export default function TaskSetup() {
     const onDateChange = ({ type } : { type : String }, selectedDate : Date | undefined) => {
         if (type == "set") {
             if (selectedDate != undefined){
-                setDate(selectedDate);
+                setDateTime(selectedDate);
 
                 if (Platform.OS === "android") {
                     toggleDatePicker();
@@ -49,7 +53,7 @@ export default function TaskSetup() {
     const onTimeChange = ({ type } : { type : String }, selectedTime : Date | undefined) => {
         if (type == "set") {
             if (selectedTime != undefined){
-                setTime(selectedTime);
+                setDateTime(selectedTime);
 
                 if (Platform.OS === "android") {
                     toggleTimePicker();
@@ -59,7 +63,22 @@ export default function TaskSetup() {
         } else {
             toggleTimePicker();
         }
-    }
+    };
+
+    const onSubmit = () => {
+        let newToDo : ToDo;
+        let id : number = UserData.topId;
+        UserData.topId += 1;
+        if (taskType === "starttime") {
+            newToDo = new ToDo(id, datetime.getTime() / 1000, -1, message, exchange(freqType), Math.floor(priority));
+            UserData.task.push(newToDo);
+        } else if (taskType === "duetime") {
+            newToDo = new ToDo(id, -1, datetime.getTime() / 1000, message, exchange(freqType), Math.floor(priority));
+            UserData.task.push(newToDo);
+        }
+	    saveData();
+        router.navigate('/(tabs)');
+    };
 
     return (
         <GestureHandlerRootView>
@@ -93,7 +112,7 @@ export default function TaskSetup() {
                         </ThemedText>
                         <Picker
                             style={taskStyle.formInput}
-                            selectedValue={freqType}
+                            selectedValue={taskType}
                             onValueChange={(itemValue, itemIndex) => setTaskType(itemValue)}
                         >
                             <Picker.Item label="Start Time" value="starttime"/>
@@ -109,7 +128,7 @@ export default function TaskSetup() {
                             datePickerVisibility && (
                                 <DateTimePicker 
                                     mode="date"
-                                    value={date}
+                                    value={datetime}
                                     onChange={onDateChange}
                                 />
                             )
@@ -134,7 +153,7 @@ export default function TaskSetup() {
                             timePickerVisibility && (
                                 <DateTimePicker 
                                     mode="time"
-                                    value={date}
+                                    value={datetime}
                                     onChange={onTimeChange}
                                 />
                             )
@@ -149,6 +168,26 @@ export default function TaskSetup() {
                                 />
                             </Pressable>
                         )}
+                    </ThemedView>
+                    <ThemedView style={taskStyle.formRow}>
+                        <ThemedText style={taskStyle.formInstruction}>
+                            Priority {Math.floor(priority)}: 
+                        </ThemedText>
+                        <Slider 
+                            style={taskStyle.formInput}
+                            minimumValue={1}
+                            maximumValue={5}
+                            minimumTrackTintColor="#5BCEFA"
+                            maximumTrackTintColor="#F5A9B8"
+                            value={priority}
+                            onValueChange={setPriority}
+                        />
+                    </ThemedView>
+                    <ThemedView style={taskStyle.formRow}>
+                        <Button 
+                            title="Create a task"
+                            onPress={onSubmit}
+                        />
                     </ThemedView>
                 </ThemedView>
             </SafeAreaView>

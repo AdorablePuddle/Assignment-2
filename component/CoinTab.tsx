@@ -1,6 +1,6 @@
 import { ThemedText } from "@/component/ThemedText";
 import { styles } from "@/component/ui/Styles";
-import { UserData } from "@/data/UserData";
+import { loadData, UserData } from "@/data/UserData";
 import { Image } from "expo-image";
 import { View } from "react-native";
 var testImages = [
@@ -9,6 +9,7 @@ var testImages = [
 ]
 
 export default function CoinTab() {
+    loadData();
     return (
         <View style={styles.titleContainer}>
             <Image style={[styles.titleImage, {resizeMode: "cover"}]} source={testImages[0]}/>

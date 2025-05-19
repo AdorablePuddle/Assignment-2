@@ -11,7 +11,7 @@ export default function TaskShop() {
             <SafeAreaView style={styles.container} >
                 <CoinTab />
                 <ScrollView>
-
+                    
                 </ScrollView>
             </SafeAreaView>
         </GestureHandlerRootView>
